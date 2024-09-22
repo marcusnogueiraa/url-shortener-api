@@ -8,15 +8,15 @@ public class Url {
     @Id
     private String id;
     private String originalUrl;
-    private String shortUrl;
+    private String shortenedUrl;
     private long acessCount;
 
     public Url(){}
     
-    public Url(String id, String originalUrl, String shortUrl, long acessCount) {
+    public Url(String id, String originalUrl, String shortenedUrl, long acessCount) {
         this.id = id;
         this.originalUrl = originalUrl;
-        this.shortUrl = shortUrl;
+        this.shortenedUrl = shortenedUrl;
         this.acessCount = acessCount;
     }
 
@@ -32,11 +32,11 @@ public class Url {
     public void setOriginalUrl(String originalUrl) {
         this.originalUrl = originalUrl;
     }
-    public String getShortUrl() {
-        return shortUrl;
+    public String getShortenedUrl() {
+        return shortenedUrl;
     }
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
+    public void setShortenedUrl(String shortenedUrl) {
+        this.shortenedUrl = shortenedUrl;
     }
     public long getAcessCount() {
         return acessCount;

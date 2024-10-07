@@ -9,15 +9,17 @@ public class Url {
     private String id;
     private String originalUrl;
     private String shortenedUrl;
-    private long acessCount;
+    private long accessCount;
 
-    public Url(){}
-    
-    public Url(String id, String originalUrl, String shortenedUrl, long acessCount) {
+    public Url(){
+        this.accessCount = 0;
+    }
+   
+    public Url(String id, String originalUrl, String shortenedUrl) {
         this.id = id;
         this.originalUrl = originalUrl;
         this.shortenedUrl = shortenedUrl;
-        this.acessCount = acessCount;
+        this.accessCount = 0;
     }
 
     public String getId() {
@@ -38,11 +40,13 @@ public class Url {
     public void setShortenedUrl(String shortenedUrl) {
         this.shortenedUrl = shortenedUrl;
     }
-    public long getAcessCount() {
-        return acessCount;
+    public long getAccessCount() {
+        return accessCount;
     }
-    public void setAcessCount(long acessCount) {
-        this.acessCount = acessCount;
+    public void setAccessCount(long accessCount) {
+        this.accessCount = accessCount;
     }
-
+    public void incrementAcessCount(){
+        this.accessCount++;
+    }
 }

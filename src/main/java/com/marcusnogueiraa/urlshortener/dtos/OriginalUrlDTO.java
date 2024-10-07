@@ -1,9 +1,9 @@
 package com.marcusnogueiraa.urlshortener.dtos;
 
-public class CreateUrlDTO {
+public class OriginalUrlDTO {
     private String url;
 
-    public CreateUrlDTO() {}
+    public OriginalUrlDTO() {}
 
     public String getUrl(){
         return url;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortUrlDTO;
-import com.marcusnogueiraa.urlshortener.service.UrlService;
+import com.marcusnogueiraa.urlshortener.services.UrlService;
 
 @RestController
 @RequestMapping("/api")

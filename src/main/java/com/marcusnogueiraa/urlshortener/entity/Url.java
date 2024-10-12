@@ -1,6 +1,7 @@
 package com.marcusnogueiraa.urlshortener.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "urls")
@@ -8,6 +9,7 @@ public class Url {
     @Id
     private String id;
     private String originalUrl;
+    @Indexed(unique = true)
     private String shortenedUrl;
     private long accessCount;
 

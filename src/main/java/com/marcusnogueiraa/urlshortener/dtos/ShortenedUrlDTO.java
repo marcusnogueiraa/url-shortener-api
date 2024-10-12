@@ -1,19 +1,19 @@
 package com.marcusnogueiraa.urlshortener.dtos;
 
-public class ShortUrlDTO {
+public class ShortenedUrlDTO {
     private String shortUrl;
 
-    public ShortUrlDTO(){}
+    public ShortenedUrlDTO(){}
     
-    public ShortUrlDTO(String shortUrl){
+    public ShortenedUrlDTO(String shortUrl){
         this.shortUrl = shortUrl;
     }
 
-    public String getShortUrl(){
+    public String getShortenedUrl(){
         return shortUrl;
     }
 
-    public void setShortUrl(String shortUrl){
+    public void setShortenedUrl(String shortUrl){
         this.shortUrl = shortUrl;
     }
 }

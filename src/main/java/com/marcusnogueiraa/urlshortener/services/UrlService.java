@@ -1,19 +1,15 @@
 package com.marcusnogueiraa.urlshortener.services;
 
-import java.lang.StringBuilder;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
-import com.marcusnogueiraa.urlshortener.dtos.ShortUrlDTO;
+import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
 import com.marcusnogueiraa.urlshortener.entity.Url;
+import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.repository.UrlRepository;
-
 
 @Service
 public class UrlService {
@@ -24,7 +20,18 @@ public class UrlService {
     @Autowired
     private UrlShortenerService urlShortenerService;
 
-    public ShortUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){
+    public OriginalUrlDTO findUrl(ShortenedUrlDTO shortUrl){
+        Optional<Url> url = urlRepository.findByShortenedUrl(shortUrl.getShortenedUrl());
+        
+        if (url.isEmpty()){
+            throw new UrlNotFoundException("Url not found");
+        }
+
+        String originalUrl = url.get().getOriginalUrl();
+        return new OriginalUrlDTO(originalUrl);
+    }
+
+    public ShortenedUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){
         String shortCode;
         Boolean exists;
         do {
@@ -38,6 +45,6 @@ public class UrlService {
 
         urlRepository.save(url);
 
-        return new ShortUrlDTO(shortCode);
+        return new ShortenedUrlDTO(shortCode);
     }
 }

@@ -22,8 +22,8 @@ public class UrlService {
     @Autowired
     private UrlRepository urlRepository;
 
-    public ShortUrlDTO createUrl(OriginalUrlDTO newUrlDto){
-        String shortCode = newUrlDto.getUrl();
+    public ShortUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){
+        String shortCode = generateShortCode(newUrlDto.getUrl());
 
         Url url = new Url();
         url.setOriginalUrl(newUrlDto.getUrl());
@@ -32,7 +32,6 @@ public class UrlService {
         urlRepository.save(url);
 
         return new ShortUrlDTO(shortCode);
-
     }
 
     private static String generateShortCode(String originalUrl){

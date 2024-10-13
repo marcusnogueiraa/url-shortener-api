@@ -26,13 +26,13 @@ public class UrlController {
     public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable("shortCode") ShortenedUrlDTO shortCode){
         try {
             OriginalUrlDTO originalUrl = urlService.findUrl(shortCode);
-            return ResponseEntity.status(HttpStatus.CREATED).body(originalUrl);
+            return ResponseEntity.status(HttpStatus.OK).body(originalUrl);
         } catch (UrlNotFoundException err){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    @PostMapping("/shorten")
+    @PostMapping("/url")
     public ResponseEntity<ShortenedUrlDTO> shortenUrl(@RequestBody OriginalUrlDTO originalUrl) {
         ShortenedUrlDTO shortenedUrl = urlService.shortenUrl(originalUrl);
         return ResponseEntity.status(HttpStatus.CREATED).body(shortenedUrl);

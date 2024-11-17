@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
-import com.marcusnogueiraa.urlshortener.dtos.StatsUrlDTO;
+import com.marcusnogueiraa.urlshortener.dtos.UrlStatsDTO;
 import com.marcusnogueiraa.urlshortener.entity.Url;
 import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.repository.UrlRepository;
@@ -21,8 +21,8 @@ public class UrlService {
     @Autowired
     private UrlShortenerService urlShortenerService;
 
-    public OriginalUrlDTO findUrl(ShortenedUrlDTO shortenedUrl){
-        Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortenedUrl.getShortenedUrl());
+    public OriginalUrlDTO findUrl(String shortUrlCode){
+        Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
         
         if (searchedUrl.isEmpty())
             throw new UrlNotFoundException("Url not found");
@@ -35,16 +35,16 @@ public class UrlService {
         return new OriginalUrlDTO(originalUrl);
     }
 
-    public StatsUrlDTO getUrlStats(ShortenedUrlDTO shortenedUrl){
-        Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortenedUrl.getShortenedUrl());
+    public UrlStatsDTO getUrlStats(String shortUrlCode){
+        Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
 
         if (searchedUrl.isEmpty())
             throw new UrlNotFoundException("Url not found");
         
         Url url = searchedUrl.get();
         
-        StatsUrlDTO statsUrl = new StatsUrlDTO(url);
-        return statsUrl;
+        UrlStatsDTO urlStats = new UrlStatsDTO(url);
+        return urlStats;
     }
 
     public ShortenedUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){

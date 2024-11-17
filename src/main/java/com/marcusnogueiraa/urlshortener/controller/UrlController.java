@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
-import com.marcusnogueiraa.urlshortener.dtos.StatsUrlDTO;
+import com.marcusnogueiraa.urlshortener.dtos.UrlStatsDTO;
 import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.services.UrlService;
 
@@ -24,20 +24,20 @@ public class UrlController {
     @Autowired
     private UrlService urlService;
 
-    @GetMapping("/url/{shortCode}")
-    public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable("shortCode") ShortenedUrlDTO shortCode){
+    @GetMapping("/url/{shortUrlCode}")
+    public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable("shortUrlCode") String shortUrlCode){
         try {
-            OriginalUrlDTO originalUrl = urlService.findUrl(shortCode);
+            OriginalUrlDTO originalUrl = urlService.findUrl(shortUrlCode);
             return ResponseEntity.status(HttpStatus.OK).body(originalUrl);
         } catch (UrlNotFoundException err){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    @GetMapping("/url/{shortCode}/stats")
-    public ResponseEntity<StatsUrlDTO> getUrlStats(@PathVariable("shortCode") ShortenedUrlDTO shortCode){
+    @GetMapping("/url/{shortUrlCode}/stats")
+    public ResponseEntity<UrlStatsDTO> getUrlStats(@PathVariable("shortUrlCode") String shortUrlCode){
         try {
-            StatsUrlDTO urlStats = urlService.getUrlStats(shortCode);
+            UrlStatsDTO urlStats = urlService.getUrlStats(shortUrlCode);
             return ResponseEntity.status(HttpStatus.OK).body(urlStats);
         } catch (UrlNotFoundException err){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

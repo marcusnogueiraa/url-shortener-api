@@ -2,14 +2,14 @@ package com.marcusnogueiraa.urlshortener.dtos;
 
 import com.marcusnogueiraa.urlshortener.entity.Url;
 
-public class StatsUrlDTO {
+public class UrlStatsDTO {
     private String originalUrl;
     private String shortenedUrl;
     private Long acessCount;
 
-    public StatsUrlDTO(){}
+    public UrlStatsDTO(){}
 
-    public StatsUrlDTO(Url url){
+    public UrlStatsDTO(Url url){
         this.originalUrl = url.getOriginalUrl();
         this.shortenedUrl = url.getShortenedUrl();
         this.acessCount = url.getAccessCount();

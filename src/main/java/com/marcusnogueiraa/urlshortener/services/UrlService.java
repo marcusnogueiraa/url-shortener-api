@@ -48,19 +48,25 @@ public class UrlService {
     }
 
     public ShortenedUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){
-        String shortCode;
-        Boolean exists;
-        do {
-            shortCode = urlShortenerService.generateShortUrl();
-            exists = urlRepository.existsByShortenedUrl(shortCode);
-        } while(exists);
+        String shortCode = getShortCode();
 
         Url url = new Url();
-        url.setOriginalUrl(newUrlDto.getUrl());
+        url.setOriginalUrl(newUrlDto.url());
         url.setShortenedUrl(shortCode);
 
         urlRepository.save(url);
 
         return new ShortenedUrlDTO(shortCode);
+    }
+
+    private String getShortCode(){
+        Boolean exists;
+        String shortCode;
+        do {
+            shortCode = urlShortenerService.generateShortUrl();
+            exists = urlRepository.existsByShortenedUrl(shortCode);
+        } while(exists);
+
+        return shortCode;
     }
 }

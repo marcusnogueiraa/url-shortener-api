@@ -1,6 +1,5 @@
 package com.marcusnogueiraa.urlshortener.controller;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +25,14 @@ public class UrlController {
 
     @GetMapping("/url/{shortUrlCode}")
     public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable("shortUrlCode") String shortUrlCode){
-        try {
-            OriginalUrlDTO originalUrl = urlService.findUrl(shortUrlCode);
-            return ResponseEntity.status(HttpStatus.OK).body(originalUrl);
-        } catch (UrlNotFoundException err){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        OriginalUrlDTO originalUrl = urlService.findUrl(shortUrlCode);
+        return ResponseEntity.status(HttpStatus.OK).body(originalUrl);
     }
 
     @GetMapping("/url/{shortUrlCode}/stats")
     public ResponseEntity<UrlStatsDTO> getUrlStats(@PathVariable("shortUrlCode") String shortUrlCode){
-        try {
-            UrlStatsDTO urlStats = urlService.getUrlStats(shortUrlCode);
-            return ResponseEntity.status(HttpStatus.OK).body(urlStats);
-        } catch (UrlNotFoundException err){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
+        UrlStatsDTO urlStats = urlService.getUrlStats(shortUrlCode);
+        return ResponseEntity.status(HttpStatus.OK).body(urlStats);    
     }
 
     @PostMapping("/url")

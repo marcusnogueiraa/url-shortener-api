@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
             exc.getMessage(),
             HttpStatus.NOT_FOUND.value(),
-            request.getPathInfo());
+            request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
 
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(
             exc.getMessage(),
             HttpStatus.INTERNAL_SERVER_ERROR.value(), 
-            request.getPathInfo());
+            request.getRequestURI());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }

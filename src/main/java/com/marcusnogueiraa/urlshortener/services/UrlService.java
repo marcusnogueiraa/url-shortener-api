@@ -16,7 +16,6 @@ import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.repository.UrlRepository;
 
 @Service
-@CacheConfig(cacheNames = "url")
 public class UrlService {
 
     @Autowired
@@ -28,15 +27,15 @@ public class UrlService {
     @Autowired
     private RedisService redisService;
 
-    @Cacheable(key = "#shortUrlCode")
+    @Cacheable(value = "url:findUrl", key = "#shortUrlCode")
     public OriginalUrlDTO findUrl(String shortUrlCode){
-        simulateProcessing(10000);
         Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
         Url url = searchedUrl.orElseThrow(() -> new UrlNotFoundException(shortUrlCode));
         String originalUrl = url.getOriginalUrl();
         return new OriginalUrlDTO(originalUrl);
     }
 
+    @Cacheable(value = "url:getUrlStats", key = "#shortUrlCode")
     public UrlStatsDTO getUrlStats(String shortUrlCode){
         Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
         Url url = searchedUrl.orElseThrow(() -> new UrlNotFoundException(shortUrlCode));
@@ -57,6 +56,7 @@ public class UrlService {
         return new ShortenedUrlDTO(shortCode);
     }
 
+    @CacheEvict(value = "url:getUrlStats", key = "#shortUrlCode")
     public void incrementAccessCount(String shortUrlCode){
         redisService.incrementUrlAccessCount(shortUrlCode);
     }
@@ -84,14 +84,5 @@ public class UrlService {
         } while(exists);
 
         return shortCode;
-    }
-
-    private void simulateProcessing(int delayMillis) {
-        try {
-            Thread.sleep(delayMillis);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            System.err.println("Processing interrupted");
-        }
     }
 }

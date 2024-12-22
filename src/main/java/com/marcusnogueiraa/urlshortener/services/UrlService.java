@@ -3,6 +3,9 @@ package com.marcusnogueiraa.urlshortener.services;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
@@ -13,6 +16,7 @@ import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.repository.UrlRepository;
 
 @Service
+@CacheConfig(cacheNames = "url")
 public class UrlService {
 
     @Autowired
@@ -24,7 +28,9 @@ public class UrlService {
     @Autowired
     private RedisService redisService;
 
+    @Cacheable(key = "#shortUrlCode")
     public OriginalUrlDTO findUrl(String shortUrlCode){
+        simulateProcessing(10000);
         Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
         Url url = searchedUrl.orElseThrow(() -> new UrlNotFoundException(shortUrlCode));
         String originalUrl = url.getOriginalUrl();
@@ -51,8 +57,15 @@ public class UrlService {
         return new ShortenedUrlDTO(shortCode);
     }
 
-    public void incrementAccessCount(String urlShortCode){
-        redisService.incrementUrlAccessCount(urlShortCode);
+    public void incrementAccessCount(String shortUrlCode){
+        redisService.incrementUrlAccessCount(shortUrlCode);
+    }
+
+    @CacheEvict(key = "#shortUrlCode")
+    public void deleteShortUrl(String shortUrlCode){
+        if (!urlRepository.existsByShortenedUrl(shortUrlCode)) 
+            throw new UrlNotFoundException(shortUrlCode);
+        urlRepository.deleteByShortenedUrl(shortUrlCode);
     }
 
     private void persistAccessCount(Url url){
@@ -71,5 +84,14 @@ public class UrlService {
         } while(exists);
 
         return shortCode;
+    }
+
+    private void simulateProcessing(int delayMillis) {
+        try {
+            Thread.sleep(delayMillis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.err.println("Processing interrupted");
+        }
     }
 }

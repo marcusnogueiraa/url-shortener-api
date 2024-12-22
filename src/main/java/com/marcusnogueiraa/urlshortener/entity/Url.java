@@ -62,7 +62,7 @@ public class Url {
         this.accessCount = accessCount;
     }
 
-    public void incrementAcessCount(){
-        this.accessCount++;
+    public void addAccessCount(long value){
+        this.accessCount += value;
     }
 }

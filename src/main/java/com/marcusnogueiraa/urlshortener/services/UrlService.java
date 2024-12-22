@@ -21,28 +21,20 @@ public class UrlService {
     @Autowired
     private UrlShortenerService urlShortenerService;
 
+    @Autowired
+    private RedisService redisService;
+
     public OriginalUrlDTO findUrl(String shortUrlCode){
         Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
-        
-        if (searchedUrl.isEmpty())
-            throw new UrlNotFoundException("Url not found");
-
-        Url url = searchedUrl.get();
-        url.incrementAcessCount();
-        urlRepository.save(url);
-
+        Url url = searchedUrl.orElseThrow(() -> new UrlNotFoundException(shortUrlCode));
         String originalUrl = url.getOriginalUrl();
         return new OriginalUrlDTO(originalUrl);
     }
 
     public UrlStatsDTO getUrlStats(String shortUrlCode){
         Optional<Url> searchedUrl = urlRepository.findByShortenedUrl(shortUrlCode);
-
-        if (searchedUrl.isEmpty())
-            throw new UrlNotFoundException("Url not found");
-        
-        Url url = searchedUrl.get();
-        
+        Url url = searchedUrl.orElseThrow(() -> new UrlNotFoundException(shortUrlCode));
+        persistAccessCount(url);
         UrlStatsDTO urlStats = new UrlStatsDTO(url);
         return urlStats;
     }
@@ -57,6 +49,17 @@ public class UrlService {
         urlRepository.save(url);
 
         return new ShortenedUrlDTO(shortCode);
+    }
+
+    public void incrementAccessCount(String urlShortCode){
+        redisService.incrementUrlAccessCount(urlShortCode);
+    }
+
+    private void persistAccessCount(Url url){
+        long accessCount = redisService.getUrlAccessCount(url.getShortenedUrl());
+        redisService.clearUrlAccessCount(url.getShortenedUrl());
+        url.addAccessCount(accessCount);
+        urlRepository.save(url);
     }
 
     private String getShortCode(){

@@ -4,7 +4,7 @@ public class UrlNotFoundException extends RuntimeException {
     public UrlNotFoundException(){
         super();
     }
-    public UrlNotFoundException(String message){
-        super(message);
+    public UrlNotFoundException(String shortCode){
+        super("Url " + shortCode + " not found");
     }
 }

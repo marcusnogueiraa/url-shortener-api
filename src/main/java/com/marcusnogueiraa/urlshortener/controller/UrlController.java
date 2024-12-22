@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.UrlStatsDTO;
-import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 import com.marcusnogueiraa.urlshortener.services.UrlService;
 
 @RestController
@@ -24,13 +23,14 @@ public class UrlController {
     private UrlService urlService;
 
     @GetMapping("/url/{shortUrlCode}")
-    public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable("shortUrlCode") String shortUrlCode){
+    public ResponseEntity<OriginalUrlDTO> findUrl(@PathVariable String shortUrlCode){
         OriginalUrlDTO originalUrl = urlService.findUrl(shortUrlCode);
+        urlService.incrementAccessCount(shortUrlCode);
         return ResponseEntity.status(HttpStatus.OK).body(originalUrl);
     }
 
     @GetMapping("/url/{shortUrlCode}/stats")
-    public ResponseEntity<UrlStatsDTO> getUrlStats(@PathVariable("shortUrlCode") String shortUrlCode){
+    public ResponseEntity<UrlStatsDTO> getUrlStats(@PathVariable String shortUrlCode){
         UrlStatsDTO urlStats = urlService.getUrlStats(shortUrlCode);
         return ResponseEntity.status(HttpStatus.OK).body(urlStats);    
     }

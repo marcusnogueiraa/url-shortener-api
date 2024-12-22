@@ -60,12 +60,14 @@ public class UrlService {
         redisService.incrementUrlAccessCount(shortUrlCode);
     }
 
-    @CacheEvict(key = "#shortUrlCode")
-    public void deleteShortUrl(String shortUrlCode){
-        if (!urlRepository.existsByShortenedUrl(shortUrlCode)) 
+    @CacheEvict(value = {"url:getUrlStats", "url:findUrl"}, key = "#shortUrlCode")
+    public void deleteShortUrl(String shortUrlCode) {
+        if (!urlRepository.existsByShortenedUrl(shortUrlCode)) {
             throw new UrlNotFoundException(shortUrlCode);
+        }
         urlRepository.deleteByShortenedUrl(shortUrlCode);
     }
+    
 
     private void persistAccessCount(Url url){
         long accessCount = redisService.getUrlAccessCount(url.getShortenedUrl());

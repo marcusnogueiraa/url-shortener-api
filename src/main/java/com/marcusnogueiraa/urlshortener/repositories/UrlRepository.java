@@ -1,9 +1,9 @@
-package com.marcusnogueiraa.urlshortener.repository;
+package com.marcusnogueiraa.urlshortener.repositories;
 
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.marcusnogueiraa.urlshortener.entity.Url;
+import com.marcusnogueiraa.urlshortener.entities.Url;
 
 public interface UrlRepository extends MongoRepository<Url, String> {
     Optional<Url> findByOriginalUrl(String OriginalUrl);

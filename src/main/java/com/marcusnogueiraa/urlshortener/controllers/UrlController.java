@@ -1,4 +1,4 @@
-package com.marcusnogueiraa.urlshortener.controller;
+package com.marcusnogueiraa.urlshortener.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

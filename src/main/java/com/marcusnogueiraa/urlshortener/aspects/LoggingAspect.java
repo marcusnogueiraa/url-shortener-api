@@ -53,11 +53,16 @@ public class LoggingAspect {
     public void logAfterShortenUrl(ShortenedUrlDTO result) {
         logger.info("Shortened URL successfully created: {}", result.shortUrlCode());
     }
-
+    
     @After("execution(* com.marcusnogueiraa.urlshortener.services.UrlService.deleteShortUrl(..))")
     public void logAfterDeleteShortUrl(JoinPoint joinPoint){
         Object[] args = joinPoint.getArgs();
         logger.info("Deleted Short Url: {}", args[0].toString());
+    }
+
+    @After("execution(* com.marcusnogueiraa.urlshortener.services.UrlShortenerService.generateShortUrl(..))")
+    public void logAfterGenerateShortUrl(JoinPoint joinPoint){
+        logger.info("Short URL Generated");
     }
 
     @After("execution(* com.marcusnogueiraa.urlshortener.exceptions.GlobalExceptionHandler.handleException(..))")

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.UrlStatsDTO;
-import com.marcusnogueiraa.urlshortener.entity.Url;
+import com.marcusnogueiraa.urlshortener.entities.Url;
 import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
-import com.marcusnogueiraa.urlshortener.repository.UrlRepository;
+import com.marcusnogueiraa.urlshortener.repositories.UrlRepository;
 
 @Service
 public class UrlService {

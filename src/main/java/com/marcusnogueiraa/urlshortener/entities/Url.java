@@ -1,4 +1,4 @@
-package com.marcusnogueiraa.urlshortener.entity;
+package com.marcusnogueiraa.urlshortener.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

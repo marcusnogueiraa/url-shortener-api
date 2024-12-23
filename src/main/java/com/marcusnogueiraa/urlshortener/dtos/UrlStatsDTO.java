@@ -1,6 +1,6 @@
 package com.marcusnogueiraa.urlshortener.dtos;
 
-import com.marcusnogueiraa.urlshortener.entity.Url;
+import com.marcusnogueiraa.urlshortener.entities.Url;
 
 public record UrlStatsDTO(
     String originalUrl,

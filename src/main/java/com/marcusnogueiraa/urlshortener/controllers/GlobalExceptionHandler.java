@@ -1,12 +1,14 @@
-package com.marcusnogueiraa.urlshortener.exceptions;
+package com.marcusnogueiraa.urlshortener.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.marcusnogueiraa.urlshortener.dtos.ErrorResponseDTO;
+import com.marcusnogueiraa.urlshortener.exceptions.UrlNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -30,6 +32,15 @@ public class GlobalExceptionHandler {
             HttpStatus.BAD_REQUEST.value(), 
             request.getRequestURI());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    } 
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAuthorizationDenied(AuthorizationDeniedException exc, HttpServletRequest request){
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
+            exc.getMessage(),
+            HttpStatus.UNAUTHORIZED.value(), 
+            request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
     }
 
     @ExceptionHandler(Exception.class)

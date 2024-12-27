@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.marcusnogueiraa.urlshortener.dtos.OriginalUrlDTO;
+import com.marcusnogueiraa.urlshortener.dtos.ShortenUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.ShortenedUrlDTO;
 import com.marcusnogueiraa.urlshortener.dtos.UrlStatsDTO;
 import com.marcusnogueiraa.urlshortener.entities.Url;
@@ -43,10 +44,11 @@ public class UrlService {
         return urlStats;
     }
 
-    public ShortenedUrlDTO shortenUrl(OriginalUrlDTO newUrlDto){
+    public ShortenedUrlDTO shortenUrl(ShortenUrlDTO newUrlDto){
         String shortCode = getShortCode();
 
         Url url = new Url();
+        if (newUrlDto.name() != null) url.setName(newUrlDto.name());
         url.setOriginalUrl(newUrlDto.url());
         url.setShortenedUrl(shortCode);
 
